@@ -13,8 +13,9 @@ app.use(express.json());
 app.set("trust proxy", true);
 
 app.use("/auth/login", router.loginRoutes);
-app.use("/auth/verify", router.verifyToken);
 app.use("/auth/signup", router.signupRoutes);
+
+app.use("/secure/user/data", router.UserDataRoutes);
 
 app.get("/", (req, res) => {
   res.send({ message: "It's Working 🔥", ip: req.ip });
