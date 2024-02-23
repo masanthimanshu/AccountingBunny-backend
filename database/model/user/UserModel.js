@@ -11,6 +11,7 @@ const schema = new Schema(
     },
     emailVerified: { type: Boolean, default: false },
     pass: { type: String, required: [true, "Password is required"] },
+    company: { type: String, required: [true, "Company name is required"] },
   },
   { timestamps: true }
 );

@@ -7,15 +7,19 @@ import { userModel } from "../../database/model/user/UserModel.js";
 export const routes = Router();
 
 routes.post("/email", async (req, res) => {
-  const { email, pass } = req.body;
+  const { email, pass, company } = req.body;
 
-  if (!email || !pass) {
+  if (!email || !pass || !company) {
     return res.status(400).send({
       error: "Missing required fields",
     });
   }
 
-  const userData = new userModel({ email, pass: hashSync(pass, 15) });
+  const userData = new userModel({
+    email,
+    company,
+    pass: hashSync(pass, 15),
+  });
 
   try {
     const data = await userData.save();
