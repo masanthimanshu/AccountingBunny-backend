@@ -13,6 +13,7 @@ app.use(express.json());
 app.set("trust proxy", true);
 
 app.use("/auth/login", router.loginRoutes);
+app.use("/auth/verify", router.verifyToken);
 app.use("/auth/signup", router.signupRoutes);
 
 app.get("/", (req, res) => {
