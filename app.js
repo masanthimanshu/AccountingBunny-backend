@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import { connect } from "mongoose";
 import * as router from "./routes/routes.js";
+import { verifyToken } from "./utils/token.js";
 
 const port = process.env.PORT;
 const database = process.env.DATABASE_URL;
@@ -12,10 +13,19 @@ app.use(cors());
 app.use(express.json());
 app.set("trust proxy", true);
 
-app.use("/auth/login", router.loginRoutes);
-app.use("/auth/signup", router.signupRoutes);
+app.use("/secure", async (req, res, next) => {
+  const { authorization } = req.headers;
 
-app.use("/secure/user/data", router.UserDataRoutes);
+  try {
+    await verifyToken(authorization);
+    next();
+  } catch {
+    res.status(401).send({ message: "Invalid token" });
+  }
+});
+
+app.use("/auth", router.authRoutes);
+app.use("/secure/user", router.userRoutes);
 
 app.get("/", (req, res) => {
   res.send({ message: "It's Working 🔥", ip: req.ip });

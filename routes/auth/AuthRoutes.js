@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { compareSync } from "bcrypt";
+import { hashSync, compareSync } from "bcrypt";
 import { generateToken } from "../../utils/token.js";
+import { signUpError } from "../../database/error/SignUpError.js";
 import { userModel } from "../../database/model/user/UserModel.js";
 
 export const routes = Router();
 
-routes.post("/email", async (req, res) => {
+routes.post("/login/email", async (req, res) => {
   const { email, pass } = req.body;
 
   if (!email || !pass) {
@@ -28,5 +29,29 @@ routes.post("/email", async (req, res) => {
     }
   } catch (err) {
     res.status(502).send({ error: err.message });
+  }
+});
+
+routes.post("/signup/email", async (req, res) => {
+  const { email, pass, company } = req.body;
+
+  if (!email || !pass || !company) {
+    return res.status(400).send({
+      error: "Missing required fields",
+    });
+  }
+
+  const userData = new userModel({
+    email,
+    company,
+    pass: hashSync(pass, 15),
+  });
+
+  try {
+    const data = await userData.save();
+    const token = generateToken(data._id.toString());
+    res.send({ status: "Success", token });
+  } catch (err) {
+    signUpError(err, res);
   }
 });
