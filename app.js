@@ -25,7 +25,7 @@ app.use("/secure", async (req, res, next) => {
 });
 
 app.use("/auth", router.authRoutes);
-app.use("/secure/user", router.userRoutes);
+app.use("/secure/profile", router.profileRoutes);
 
 app.get("/", (req, res) => {
   res.send({ message: "It's Working 🔥", ip: req.ip });
