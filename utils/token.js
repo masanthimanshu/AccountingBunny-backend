@@ -12,10 +12,11 @@ export const decodeToken = (token) => {
   return decoded;
 };
 
-export const verifyToken = async (token) => {
+export const verifyToken = (token) => {
   try {
     jwt.verify(token, secret);
+    return true;
   } catch (err) {
-    throw err;
+    return false;
   }
 };

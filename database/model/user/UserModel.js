@@ -10,10 +10,11 @@ const schema = new Schema(
       validate: [emailValidator, "Invalid email"],
     },
     emailVerified: { type: Boolean, default: false },
+    name: { type: String, required: [true, "Name is required"] },
     pass: { type: String, required: [true, "Password is required"] },
     company: { type: String, required: [true, "Company name is required"] },
   },
   { timestamps: true }
 );
 
-export const userModel = model("User", schema);
+export const UserModel = model("User", schema);

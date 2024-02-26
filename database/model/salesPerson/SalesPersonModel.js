@@ -5,6 +5,7 @@ const schema = new Schema(
   {
     email: {
       type: String,
+      unique: true,
       required: [true, "Email is required"],
       validate: [emailValidator, "Invalid email"],
     },
@@ -14,4 +15,4 @@ const schema = new Schema(
   { timestamps: true }
 );
 
-export const salesPersonModel = model("SalesPerson", schema);
+export const SalesPersonModel = model("SalesPerson", schema);

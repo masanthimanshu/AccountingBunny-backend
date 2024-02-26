@@ -2,11 +2,11 @@ import { Router } from "express";
 import { hashSync, compareSync } from "bcrypt";
 import { generateToken } from "../../utils/token.js";
 import { signUpError } from "../../database/error/SignUpError.js";
-import { userModel } from "../../database/model/user/UserModel.js";
+import { UserModel } from "../../database/model/user/UserModel.js";
 
 export const routes = Router();
 
-routes.post("/login/email", async (req, res) => {
+routes.post("/login", async (req, res) => {
   const { email, pass } = req.body;
 
   if (!email || !pass) {
@@ -16,7 +16,7 @@ routes.post("/login/email", async (req, res) => {
   }
 
   try {
-    const data = await userModel.findOne({ email });
+    const data = await UserModel.findOne({ email });
     if (!data) {
       res.status(404).send({ message: "User does not exists" });
     } else {
@@ -32,16 +32,17 @@ routes.post("/login/email", async (req, res) => {
   }
 });
 
-routes.post("/signup/email", async (req, res) => {
-  const { email, pass, company } = req.body;
+routes.post("/signup", async (req, res) => {
+  const { name, email, pass, company } = req.body;
 
-  if (!email || !pass || !company) {
+  if (!name || !email || !pass || !company) {
     return res.status(400).send({
       error: "Missing required fields",
     });
   }
 
-  const userData = new userModel({
+  const userData = new UserModel({
+    name,
     email,
     company,
     pass: hashSync(pass, 15),

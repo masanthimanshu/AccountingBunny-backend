@@ -20,4 +20,4 @@ const schema = new Schema(
   { timestamps: true }
 );
 
-export const customerModel = model("Customer", schema);
+export const CustomerModel = model("Customer", schema);
