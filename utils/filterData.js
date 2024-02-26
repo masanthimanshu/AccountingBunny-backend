@@ -1,5 +1,12 @@
 export const filterArray = (data) => {
-  return data._doc.map(({ _id, __v, ...rest }) => rest);
+  const out = [];
+
+  data.forEach((ele) => {
+    const { _id, __v, user, ...rest } = ele._doc;
+    out.push(rest);
+  });
+
+  return out;
 };
 
 export const filterJSON = (data) => {
