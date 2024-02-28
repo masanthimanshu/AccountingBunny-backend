@@ -1,17 +1,17 @@
-import crypto from "crypto";
+import crypto from 'crypto'
 
 export const generateKeyPair = () => {
-  const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+  const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
     publicKeyEncoding: {
-      type: "spki",
-      format: "pem",
+      type: 'spki',
+      format: 'pem'
     },
     privateKeyEncoding: {
-      type: "pkcs8",
-      format: "pem",
-    },
-  });
+      type: 'pkcs8',
+      format: 'pem'
+    }
+  })
 
-  return { publicKey, privateKey };
-};
+  return { publicKey, privateKey }
+}

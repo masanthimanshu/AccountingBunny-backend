@@ -1,22 +1,42 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken'
 
-const secret = process.env.JWT_SECRET;
+const authSecret = process.env.AUTH_TOKEN_SECRET
+const refreshSecret = process.env.REFRESH_TOKEN_SECRET
 
-export const generateToken = (data) => {
-  const token = jwt.sign({ data }, secret, { expiresIn: "2d" });
-  return token;
-};
+export const generateAuthToken = (data) => {
+  const token = jwt.sign({ data }, authSecret, { expiresIn: '1h' })
+  return token
+}
 
-export const decodeToken = (token) => {
-  const decoded = jwt.verify(token, secret);
-  return decoded;
-};
+export const generateRefreshToken = (data) => {
+  const token = jwt.sign({ data }, refreshSecret, { expiresIn: '4d' })
+  return token
+}
 
-export const verifyToken = (token) => {
+export const decodeAuthToken = (token) => {
+  const decoded = jwt.verify(token, authSecret)
+  return decoded
+}
+
+export const decodeRefreshToken = (token) => {
+  const decoded = jwt.verify(token, refreshSecret)
+  return decoded
+}
+
+export const verifyAuthToken = (token) => {
   try {
-    jwt.verify(token, secret);
-    return true;
+    jwt.verify(token, authSecret)
+    return true
   } catch (err) {
-    return false;
+    return false
   }
-};
+}
+
+export const verifyRefreshToken = (token) => {
+  try {
+    jwt.verify(token, refreshSecret)
+    return true
+  } catch (err) {
+    return false
+  }
+}
