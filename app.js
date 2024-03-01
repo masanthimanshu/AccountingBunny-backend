@@ -18,7 +18,9 @@ app.use('/secure', (req, res, next) => {
   const { authorization } = req.headers
 
   if (!authorization || !refresh) {
-    res.status(401).send({ message: 'Token not provided' })
+    res.status(401).send({
+      message: 'Token not provided'
+    })
   }
 
   if (verifyAuthToken(authorization) && verifyRefreshToken(refresh)) next()
@@ -33,6 +35,10 @@ app.use('/secure/salesperson', router.salespersonRoutes)
 
 app.get('/', (req, res) => {
   res.send({ message: "It's Working 🔥", ip: req.ip })
+})
+
+app.get('/secure/verify-token', (req, res) => {
+  res.send({ status: 'Success', message: 'User is valid' })
 })
 
 app.listen(port, () => {

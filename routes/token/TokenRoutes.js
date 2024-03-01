@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import {
-  verifyAuthToken,
   generateAuthToken,
   verifyRefreshToken,
   decodeRefreshToken
@@ -19,18 +18,6 @@ const refreshTokenHandler = (req, res, next) => {
   else res.status(401).send({ message: 'Invalid refresh token' })
 }
 
-const verifyTokenHandler = (req, res, next) => {
-  const { refresh } = req.headers
-  const { authorization } = req.headers
-
-  if (!authorization || !refresh) {
-    res.status(401).send({ message: 'Token not provided' })
-  }
-
-  if (verifyAuthToken(authorization) && verifyRefreshToken(refresh)) next()
-  else res.status(401).send({ message: 'Invalid token' })
-}
-
 routes.get('/refresh', refreshTokenHandler, (req, res) => {
   const { refresh } = req.headers
 
@@ -38,8 +25,4 @@ routes.get('/refresh', refreshTokenHandler, (req, res) => {
   const authToken = generateAuthToken(data)
 
   res.send({ status: 'Success', authToken })
-})
-
-routes.get('/verify', verifyTokenHandler, (req, res) => {
-  res.send({ status: 'Success', message: 'User is valid' })
 })
