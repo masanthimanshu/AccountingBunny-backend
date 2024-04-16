@@ -11,7 +11,6 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.set('trust proxy', true)
 
 app.use('/secure', (req, res, next) => {
   const { refresh } = req.headers
@@ -31,14 +30,11 @@ app.use('/token', router.tokenRoutes)
 app.use('/secure/profile', router.profileRoutes)
 app.use('/secure/salesperson', router.salespersonRoutes)
 
-app.get('/', (req, res) => {
-  res.send({ message: "It's Working 🔥", ip: req.ip })
-})
-
 app.get('/secure/verify-token', (req, res) => {
   res.send({ status: 'Success', message: 'User is valid' })
 })
 
+app.get('/', (req, res) => res.send({ message: "It's Working 🔥" }))
 app.listen(port, () => console.log(`Active on http://localhost:${port}`))
 
 connect(database).then(() => console.log('Database Connected'))
